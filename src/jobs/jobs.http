@@ -1,0 +1,8 @@
+### POST file for job
+POST {{base_url}}/jobs
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="video.mp4"
+
+< ../../static/video.mp4
