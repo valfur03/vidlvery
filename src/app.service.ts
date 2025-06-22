@@ -1,6 +1,7 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { watch, mkdirSync } from 'node:fs';
-import mv from 'mv';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+import mv = require('mv');
 import { ConfigService } from '@nestjs/config';
 import { ENV_PUBLIC_DIRECTORY_PATH_KEY, ENV_WATCH_DIRECTORY_PATH_KEY } from './common/constants/env';
 
