@@ -5,16 +5,17 @@ WATCH_DIR="${1:-.}"
 
 on_change() {
     local file="$1"
-    ffmpeg \
-      -i "${file}" \
-      -c:v libx264 \
-      -preset fast \
-      -crf 18 \
-      -profile:v high \
-      -pix_fmt yuv420p \
-      -c:a aac \
-      -b:a 320k \
-      "${WATCH_DIR}/out/$(basename "$file")"
+#    ffmpeg \
+#      -i "${file}" \
+#      -c:v libx264 \
+#      -preset fast \
+#      -crf 18 \
+#      -profile:v high \
+#      -pix_fmt yuv420p \
+#      -c:a aac \
+#      -b:a 320k \
+#      "${WATCH_DIR}/out/$(basename "$file")"
+    cp "${file}" "${WATCH_DIR}/out/$(basename "$file")"
 }
 
 # Check if inotifywait is installed
