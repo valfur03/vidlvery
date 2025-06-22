@@ -1,5 +1,6 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
-import { watch, mkdirSync, rename } from 'node:fs';
+import { watch, mkdirSync } from 'node:fs';
+import mv from 'mv';
 import { ConfigService } from '@nestjs/config';
 import { ENV_PUBLIC_DIRECTORY_PATH_KEY, ENV_WATCH_DIRECTORY_PATH_KEY } from './common/constants/env';
 
@@ -30,15 +31,11 @@ export class AppService implements OnApplicationBootstrap {
 
           const newFilename = filename.replace(/^.+-id-/, '');
 
-          rename(
-            `${this.outputWatchDirectoryPath}/${filename}`,
-            `${this.publicDirectoryPath}/${newFilename}`,
-            (error) => {
-              if (error) {
-                throw error;
-              }
-            },
-          );
+          mv(`${this.outputWatchDirectoryPath}/${filename}`, `${this.publicDirectoryPath}/${newFilename}`, (error) => {
+            if (error) {
+              throw error;
+            }
+          });
         }
       }
     });
