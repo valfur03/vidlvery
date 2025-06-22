@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { writeFile } from 'node:fs/promises';
-import { ENV_WATCH_DIRECTORY_PATH_KEY } from '../common/constants/env';
+import { CONFIG_WATCH_DIRECTORY_PATH_KEY } from '../common/constants/env';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class JobsService {
   private readonly jobs = new Map<string, { initiator: { emailAddress: string } }>();
 
   constructor(private readonly configService: ConfigService) {
-    this.watchDirectoryPath = this.configService.getOrThrow(ENV_WATCH_DIRECTORY_PATH_KEY);
+    this.watchDirectoryPath = this.configService.getOrThrow(CONFIG_WATCH_DIRECTORY_PATH_KEY);
     this.inputWatchDirectoryPath = `${this.watchDirectoryPath}/in`;
   }
 

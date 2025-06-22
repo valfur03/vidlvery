@@ -5,8 +5,8 @@ import mv = require('mv');
 import { ConfigService } from '@nestjs/config';
 import {
   CONFIG_VIDEOS_BASE_URL_KEY,
-  ENV_PUBLIC_DIRECTORY_PATH_KEY,
-  ENV_WATCH_DIRECTORY_PATH_KEY,
+  CONFIG_PUBLIC_DIRECTORY_PATH_KEY,
+  CONFIG_WATCH_DIRECTORY_PATH_KEY,
 } from './common/constants/env';
 import { MailerService } from './mailer/mailer.service';
 import { JobsService } from './jobs/jobs.service';
@@ -23,8 +23,8 @@ export class AppService implements OnApplicationBootstrap {
     private readonly jobsService: JobsService,
     private readonly mailerService: MailerService,
   ) {
-    this.watchDirectoryPath = this.configService.getOrThrow(ENV_WATCH_DIRECTORY_PATH_KEY);
-    this.publicDirectoryPath = this.configService.getOrThrow(ENV_PUBLIC_DIRECTORY_PATH_KEY);
+    this.watchDirectoryPath = this.configService.getOrThrow(CONFIG_WATCH_DIRECTORY_PATH_KEY);
+    this.publicDirectoryPath = this.configService.getOrThrow(CONFIG_PUBLIC_DIRECTORY_PATH_KEY);
     this.inputWatchDirectoryPath = `${this.watchDirectoryPath}/in`;
     this.outputWatchDirectoryPath = `${this.watchDirectoryPath}/out`;
   }
