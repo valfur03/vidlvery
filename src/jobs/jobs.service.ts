@@ -15,7 +15,7 @@ export class JobsService {
 
   async uploadFile(file: Express.Multer.File) {
     const temporaryUniqueFileId = crypto.randomUUID();
-    const inputFilePath = `${this.inputWatchDirectoryPath}/${temporaryUniqueFileId}-${file.originalname}`;
+    const inputFilePath = `${this.inputWatchDirectoryPath}/${temporaryUniqueFileId}-id-${file.originalname}`;
 
     await writeFile(inputFilePath, file.buffer);
   }

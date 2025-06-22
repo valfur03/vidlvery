@@ -16,6 +16,7 @@ on_change() {
 #      -b:a 320k \
 #      "${WATCH_DIR}/out/$(basename "$file")"
     cp "${file}" "${WATCH_DIR}/out/$(basename "$file")"
+    rm "${file}"
 }
 
 # Check if inotifywait is installed
