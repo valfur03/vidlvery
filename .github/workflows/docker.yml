@@ -43,10 +43,21 @@ jobs:
             type=ref,event=branch
             type=semver,pattern={{version}}
       -
-        name: Build and push
+        name: Build and push Vidlvery docker image
         uses: docker/build-push-action@v5
         with:
           context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      -
+        name: Build and push ffmpeg side-car docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ffmpeg-queue.Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
