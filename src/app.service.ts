@@ -1,7 +1,7 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { watch, mkdirSync, rename } from 'node:fs';
 import { ConfigService } from '@nestjs/config';
-import { ENV_WATCH_DIRECTORY_PATH_KEY } from './common/constants/env';
+import { ENV_PUBLIC_DIRECTORY_PATH_KEY, ENV_WATCH_DIRECTORY_PATH_KEY } from './common/constants/env';
 
 @Injectable()
 export class AppService implements OnApplicationBootstrap {
@@ -12,7 +12,7 @@ export class AppService implements OnApplicationBootstrap {
 
   constructor(private readonly configService: ConfigService) {
     this.watchDirectoryPath = this.configService.getOrThrow(ENV_WATCH_DIRECTORY_PATH_KEY);
-    this.publicDirectoryPath = this.configService.getOrThrow(ENV_WATCH_DIRECTORY_PATH_KEY);
+    this.publicDirectoryPath = this.configService.getOrThrow(ENV_PUBLIC_DIRECTORY_PATH_KEY);
     this.inputWatchDirectoryPath = `${this.watchDirectoryPath}/in`;
     this.outputWatchDirectoryPath = `${this.watchDirectoryPath}/out`;
   }
