@@ -34,8 +34,8 @@ jobs:
           username: ${{ env.REGISTRY_USER }}
           password: ${{ env.REGISTRY_PASS }}
       -
-        name: Docker meta
-        id: meta
+        name: Docker Vidlvery meta
+        id: vidlvery-meta
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
@@ -49,8 +49,18 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.vidlvery-meta.outputs.tags }}
+          labels: ${{ steps.vidlvery-meta.outputs.labels }}
+
+      -
+        name: Docker Vidlvery meta
+        id: ffmpeg-queue-meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-ffmpeg-queue
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
 
       -
         name: Build and push ffmpeg side-car docker image
@@ -60,5 +70,5 @@ jobs:
           file: ffmpeg-queue.Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.ffmpeg-queue-meta.outputs.tags }}
+          labels: ${{ steps.ffmpeg-queue-meta.outputs.labels }}
