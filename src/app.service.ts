@@ -16,8 +16,4 @@ export class AppService implements OnApplicationBootstrap {
       mkdirSync(this.watchDirectoryPath);
     }
   }
-
-  getHello(): string {
-    return 'Hello World!';
-  }
 }
