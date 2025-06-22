@@ -4,5 +4,6 @@ export const CONFIG_VIDEOS_BASE_URL_KEY = 'videosBaseUrl';
 export const CONFIG_SMTP_FROM_KEY = 'smtp.from';
 export const CONFIG_SMTP_HOST_KEY = 'smtp.host';
 export const CONFIG_SMTP_PORT_KEY = 'smtp.port';
+export const CONFIG_SMTP_SECURE_KEY = 'smtp.secure';
 export const CONFIG_SMTP_USER_KEY = 'smtp.user';
 export const CONFIG_SMTP_PASS_KEY = 'smtp.pass';

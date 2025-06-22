@@ -8,6 +8,7 @@ import {
   CONFIG_SMTP_HOST_KEY,
   CONFIG_SMTP_PASS_KEY,
   CONFIG_SMTP_PORT_KEY,
+  CONFIG_SMTP_SECURE_KEY,
   CONFIG_SMTP_USER_KEY,
 } from '../common/constants/env';
 
@@ -21,6 +22,7 @@ import {
         return nodemailer.createTransport({
           host: configService.getOrThrow(CONFIG_SMTP_HOST_KEY),
           port: configService.get(CONFIG_SMTP_PORT_KEY) ?? 587,
+          secure: configService.getOrThrow(CONFIG_SMTP_SECURE_KEY),
           auth: {
             user: configService.getOrThrow(CONFIG_SMTP_USER_KEY),
             pass: configService.getOrThrow(CONFIG_SMTP_PASS_KEY),
