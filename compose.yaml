@@ -3,6 +3,13 @@ services:
     build: .
     environment:
       WATCH_DIRECTORY_PATH: /tmp/vidlvery
+      PUBLIC_DIRECTORY_PATH: /tmp/vidlvery
+      VIDEOS_BASE_URL: "${VIDEOS_BASE_URL}"
+      SMTP_FROM: "${SMTP_FROM}"
+      SMTP_HOST: "${SMTP_HOST}"
+      SMTP_PORT: "${SMTP_PORT}"
+      SMTP_USER: "${SMTP_USER}"
+      SMTP_PASS: "${SMTP_PASS}"
     ports:
       - 3000:3000
     volumes:

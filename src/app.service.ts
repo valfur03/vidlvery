@@ -3,7 +3,13 @@ import { watch, mkdirSync } from 'node:fs';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 import mv = require('mv');
 import { ConfigService } from '@nestjs/config';
-import { ENV_PUBLIC_DIRECTORY_PATH_KEY, ENV_WATCH_DIRECTORY_PATH_KEY } from './common/constants/env';
+import {
+  CONFIG_VIDEOS_BASE_URL_KEY,
+  ENV_PUBLIC_DIRECTORY_PATH_KEY,
+  ENV_WATCH_DIRECTORY_PATH_KEY,
+} from './common/constants/env';
+import { MailerService } from './mailer/mailer.service';
+import { JobsService } from './jobs/jobs.service';
 
 @Injectable()
 export class AppService implements OnApplicationBootstrap {
@@ -12,7 +18,11 @@ export class AppService implements OnApplicationBootstrap {
   private readonly inputWatchDirectoryPath: string;
   private readonly outputWatchDirectoryPath: string;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly jobsService: JobsService,
+    private readonly mailerService: MailerService,
+  ) {
     this.watchDirectoryPath = this.configService.getOrThrow(ENV_WATCH_DIRECTORY_PATH_KEY);
     this.publicDirectoryPath = this.configService.getOrThrow(ENV_PUBLIC_DIRECTORY_PATH_KEY);
     this.inputWatchDirectoryPath = `${this.watchDirectoryPath}/in`;
@@ -23,7 +33,7 @@ export class AppService implements OnApplicationBootstrap {
     mkdirSync(this.inputWatchDirectoryPath, { recursive: true });
     mkdirSync(this.outputWatchDirectoryPath, { recursive: true });
 
-    watch(this.outputWatchDirectoryPath, undefined, (event, filename) => {
+    watch(this.outputWatchDirectoryPath, undefined, async (event, filename) => {
       switch (event) {
         case 'change': {
           if (filename === null) {
@@ -37,6 +47,15 @@ export class AppService implements OnApplicationBootstrap {
               throw error;
             }
           });
+
+          const job = this.jobsService.popByFilename(filename);
+          if (job !== undefined) {
+            await this.mailerService.sendMail(
+              job.initiator.emailAddress,
+              'Job done',
+              `The video is available!\n${this.configService.getOrThrow(CONFIG_VIDEOS_BASE_URL_KEY) + '/' + newFilename}`,
+            );
+          }
         }
       }
     });
