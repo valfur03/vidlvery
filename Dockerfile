@@ -7,7 +7,7 @@ FROM base AS dev
 
 ENV NODE_ENV dev
 
-COPY --chown=node:node . .
+COPY . .
 
 RUN npm install
 
@@ -17,8 +17,8 @@ FROM base AS build
 
 ENV NODE_ENV production
 
-COPY --chown=node:node --from=dev /app/node_modules ./node_modules
-COPY --chown=node:node . .
+COPY --from=dev /app/node_modules ./node_modules
+COPY . .
 
 RUN npm run build
 RUN npm ci
@@ -29,10 +29,8 @@ FROM base AS prod
 
 ENV NODE_ENV production
 
-COPY --chown=node:node --from=build /app/package.json package.json
-COPY --chown=node:node --from=build /app/dist dist
-COPY --chown=node:node --from=build /app/node_modules node_modules
-
-USER node
+COPY --from=build /app/package.json package.json
+COPY --from=build /app/dist dist
+COPY --from=build /app/node_modules node_modules
 
 CMD ["npm", "run", "start:prod"]

@@ -1,0 +1,21 @@
+services:
+  vidlvery:
+    build: .
+    environment:
+      WATCH_DIRECTORY_PATH: /tmp/vidlvery
+    ports:
+      - 3000:3000
+    volumes:
+      - watch-directory:/tmp/vidlvery
+    restart: unless-stopped
+
+  ffmpeg-queue:
+    build:
+      context: .
+      dockerfile: ffmpeg-queue.Dockerfile
+    volumes:
+      - watch-directory:/tmp/vidlvery
+    restart: unless-stopped
+
+volumes:
+  watch-directory:

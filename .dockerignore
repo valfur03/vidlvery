@@ -10,8 +10,10 @@ node_modules
 .gitignore
 
 # docker
-Dockerfile*
+*Dockerfile
 docker-compose*
+compose.yaml
+.dockerignore
 
 # editors & IDE
 *.swp
