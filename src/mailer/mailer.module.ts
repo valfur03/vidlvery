@@ -23,6 +23,7 @@ import {
           host: configService.getOrThrow(CONFIG_SMTP_HOST_KEY),
           port: configService.get(CONFIG_SMTP_PORT_KEY) ?? 587,
           secure: configService.getOrThrow(CONFIG_SMTP_SECURE_KEY),
+          requireTLS: configService.getOrThrow(CONFIG_SMTP_SECURE_KEY),
           auth: {
             user: configService.getOrThrow(CONFIG_SMTP_USER_KEY),
             pass: configService.getOrThrow(CONFIG_SMTP_PASS_KEY),
