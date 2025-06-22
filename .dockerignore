@@ -1,0 +1,32 @@
+# node
+node_modules
+
+# local env
+.env
+.env.*
+
+# git files
+.git
+.gitignore
+
+# docker
+Dockerfile*
+docker-compose*
+
+# editors & IDE
+*.swp
+*.swo
+*.DS_Store
+.vscode
+.idea
+
+# test files
+test
+tests
+*.spec.js
+*.test.js
+coverage
+
+# build artifacts
+dist
+build
