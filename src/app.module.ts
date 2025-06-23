@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { JobsModule } from './jobs/jobs.module';
 import { MailerModule } from './mailer/mailer.module';
+import { VideosModule } from './videos/videos.module';
 import baseConfiguration from './common/config/base';
 import smtpConfiguration from './common/config/smtp';
 
@@ -14,6 +15,7 @@ import smtpConfiguration from './common/config/smtp';
     }),
     JobsModule,
     MailerModule,
+    VideosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -10,6 +10,7 @@ import {
 } from './common/constants/env';
 import { MailerService } from './mailer/mailer.service';
 import { JobsService } from './jobs/jobs.service';
+import { VideosService } from './videos/videos.service';
 
 @Injectable()
 export class AppService implements OnApplicationBootstrap {
@@ -22,6 +23,7 @@ export class AppService implements OnApplicationBootstrap {
     private readonly configService: ConfigService,
     private readonly jobsService: JobsService,
     private readonly mailerService: MailerService,
+    private readonly videosService: VideosService,
   ) {
     this.watchDirectoryPath = this.configService.getOrThrow(CONFIG_WATCH_DIRECTORY_PATH_KEY);
     this.publicDirectoryPath = this.configService.getOrThrow(CONFIG_PUBLIC_DIRECTORY_PATH_KEY);
@@ -41,8 +43,11 @@ export class AppService implements OnApplicationBootstrap {
           }
 
           const newFilename = filename.replace(/^.+-id-/, '');
+          const newFileId = await this.videosService.generateId(`${this.outputWatchDirectoryPath}/${filename}`);
+          const newFileSlug = `${newFileId}/${newFilename}`;
 
-          mv(`${this.outputWatchDirectoryPath}/${filename}`, `${this.publicDirectoryPath}/${newFilename}`, (error) => {
+          mkdirSync(`${this.publicDirectoryPath}/${newFileId}`, { recursive: true });
+          mv(`${this.outputWatchDirectoryPath}/${filename}`, `${this.publicDirectoryPath}/${newFileSlug}`, (error) => {
             if (error) {
               throw error;
             }
@@ -53,7 +58,7 @@ export class AppService implements OnApplicationBootstrap {
             await this.mailerService.sendMail(
               job.initiator.emailAddress,
               'Job done',
-              `The video is available!\n${this.configService.getOrThrow(CONFIG_VIDEOS_BASE_URL_KEY) + '/' + newFilename}`,
+              `The video is available!\n${this.configService.getOrThrow(CONFIG_VIDEOS_BASE_URL_KEY) + '/' + newFileSlug}`,
             );
           }
         }
