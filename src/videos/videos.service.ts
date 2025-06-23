@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as fs from 'node:fs/promises';
-import crypto from 'crypto';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+import crypto = require('crypto');
 import { ConfigService } from '@nestjs/config';
 import { CONFIG_PUBLIC_DIRECTORY_PATH_KEY } from '../common/constants/env';
 import * as path from 'node:path';
