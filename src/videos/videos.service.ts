@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as fs from 'node:fs/promises';
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-import blake2 = require('blake2');
+import crypto from 'crypto';
 import { ConfigService } from '@nestjs/config';
 import { CONFIG_PUBLIC_DIRECTORY_PATH_KEY } from '../common/constants/env';
 import * as path from 'node:path';
@@ -45,10 +44,9 @@ export class VideosService {
     return fs
       .readFile(filePath)
       .then((buffer) => {
-        const digest = blake2.createHash('blake2b').update(buffer).digest('hex');
-        const id: string = Buffer.from(digest).toString('base64');
+        const digest = crypto.createHash('sha256').update(buffer).digest('base64');
 
-        return this.sliceIdWithoutOverlaping(id);
+        return this.sliceIdWithoutOverlaping(digest);
       })
       .catch((error) => {
         console.error(error);
