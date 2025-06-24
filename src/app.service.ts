@@ -49,6 +49,7 @@ export class AppService implements OnApplicationBootstrap {
           mkdirSync(`${this.publicDirectoryPath}/${newFileId}`, { recursive: true });
           mv(`${this.outputWatchDirectoryPath}/${filename}`, `${this.publicDirectoryPath}/${newFileSlug}`, (error) => {
             if (error) {
+              console.error(error);
               throw error;
             }
           });
