@@ -5,6 +5,10 @@ import { ConfigModule } from '@nestjs/config';
 import { JobsModule } from './jobs/jobs.module';
 import { MailerModule } from './mailer/mailer.module';
 import { VideosModule } from './videos/videos.module';
+import { FfmpegModule } from './ffmpeg/ffmpeg.module';
+import { FsModule } from './fs/fs.module';
+import { EncoderModule } from './encoder/encoder.module';
+import { NotifierModule } from './notifier/notifier.module';
 import baseConfiguration from './common/config/base';
 import smtpConfiguration from './common/config/smtp';
 
@@ -16,6 +20,10 @@ import smtpConfiguration from './common/config/smtp';
     JobsModule,
     MailerModule,
     VideosModule,
+    FfmpegModule,
+    FsModule,
+    EncoderModule,
+    NotifierModule,
   ],
   controllers: [AppController],
   providers: [AppService],

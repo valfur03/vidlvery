@@ -6,14 +6,36 @@ import { ConfigService } from '@nestjs/config';
 import { CONFIG_PUBLIC_DIRECTORY_PATH_KEY } from '../common/constants/env';
 import * as path from 'node:path';
 import { trimFileExtension } from '../common/utils/trim-file-extension';
+import { FsService } from '../fs/fs.service';
+import { Video } from './video.type';
+import { Job } from '../jobs/job.type';
 
 @Injectable()
 export class VideosService {
   private readonly MIN_ID_LENGTH = 8;
   private readonly publicDirectoryPath: string;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly fsService: FsService,
+  ) {
     this.publicDirectoryPath = this.configService.getOrThrow(CONFIG_PUBLIC_DIRECTORY_PATH_KEY);
+  }
+
+  async moveFile(filePath: string, job: Job): Promise<Video> {
+    const videoId = await this.generateId(filePath);
+
+    await this.fsService.mv(filePath, `${this.publicDirectoryPath}/${videoId}/${job.file.name}`);
+
+    return {
+      job: {
+        ...job,
+        file: {
+          ...job.file,
+          id: videoId,
+        },
+      },
+    };
   }
 
   async getAll() {

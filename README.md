@@ -7,11 +7,11 @@
 Create a .env file with the following variables:
 
 ```
-WATCH_DIRECTORY_PATH=/tmp/vidlvery
 # The directory in which the video will be exposed to the web (e.g. NGINX directory)
 PUBLIC_DIRECTORY_PATH=
 # The base URL of your publicly accessible web server (from which the videos will be accessed)
 VIDEOS_BASE_URL=
+DISABLE_FFMPEG=false
 
 SMTP_HOST=
 SMTP_FROM=

@@ -1,31 +1,46 @@
 import { Injectable } from '@nestjs/common';
-import { writeFile } from 'node:fs/promises';
-import { CONFIG_WATCH_DIRECTORY_PATH_KEY } from '../common/constants/env';
-import { ConfigService } from '@nestjs/config';
+import { Job } from './job.type';
+import { FsService } from '../fs/fs.service';
+import { VideosService } from '../videos/videos.service';
+import { EncoderService } from '../encoder/encoder.service';
+import { NotifierService } from '../notifier/notifier.service';
 
 @Injectable()
 export class JobsService {
-  private readonly watchDirectoryPath: string;
-  private readonly inputWatchDirectoryPath: string;
-  private readonly jobs = new Map<string, { initiator: { emailAddress: string } }>();
+  private readonly tmpUploadDirectoryPath = '/tmp/vidlvery';
 
-  constructor(private readonly configService: ConfigService) {
-    this.watchDirectoryPath = this.configService.getOrThrow(CONFIG_WATCH_DIRECTORY_PATH_KEY);
-    this.inputWatchDirectoryPath = `${this.watchDirectoryPath}/in`;
+  constructor(
+    private readonly fsService: FsService,
+    private readonly encoderService: EncoderService,
+    private readonly videosService: VideosService,
+    private readonly notifierService: NotifierService,
+  ) {}
+
+  async schedule(job: Job) {
+    const videoFilePath = this.encoderService.encodeFile(job.file.path);
+    const video = await this.videosService.moveFile(videoFilePath, job);
+    await this.notifierService.notify(video.job);
   }
 
-  async uploadFile(file: Express.Multer.File, initiatorEmailAddress: string) {
+  async add(file: Express.Multer.File, initiatorEmailAddress: string): Promise<Job> {
     const temporaryUniqueFileId = crypto.randomUUID();
-    const inputFileName = `${temporaryUniqueFileId}-id-${file.originalname}`;
-    const inputFilePath = `${this.inputWatchDirectoryPath}/${inputFileName}`;
+    const inputFilePwdPath = this.tmpUploadDirectoryPath;
+    const inputFilePath = `${inputFilePwdPath}/${temporaryUniqueFileId}-${file.originalname}`;
 
-    this.jobs.set(inputFileName, { initiator: { emailAddress: initiatorEmailAddress } });
-    await writeFile(inputFilePath, file.buffer);
-  }
+    await this.fsService.writeFile(inputFilePath, file.buffer, inputFilePwdPath);
 
-  popByFilename(filename: string) {
-    const job = this.jobs.get(filename);
-    this.jobs.delete(filename);
+    const job = {
+      id: temporaryUniqueFileId,
+      file: {
+        name: file.originalname,
+        path: inputFilePath,
+      },
+      initiator: {
+        email: initiatorEmailAddress,
+      },
+    };
+    this.schedule(job);
+
     return job;
   }
 }

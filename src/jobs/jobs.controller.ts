@@ -26,6 +26,6 @@ export class JobsController {
       throw new BadRequestException('Must have an initiator email address in headers.');
     }
 
-    await this.jobsService.uploadFile(file, initiatorEmailAddress);
+    return this.jobsService.add(file, initiatorEmailAddress);
   }
 }

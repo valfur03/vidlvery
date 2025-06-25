@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
 import { JobsController } from './jobs.controller';
 import { JobsService } from './jobs.service';
-import { ConfigModule } from '@nestjs/config';
+import { FsModule } from '../fs/fs.module';
+import { EncoderModule } from '../encoder/encoder.module';
+import { NotifierModule } from '../notifier/notifier.module';
+import { VideosModule } from '../videos/videos.module';
 
 @Module({
-  imports: [ConfigModule],
+  imports: [EncoderModule, VideosModule, FsModule, NotifierModule],
   controllers: [JobsController],
   providers: [JobsService],
   exports: [JobsService],
