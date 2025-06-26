@@ -6,6 +6,8 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class NotifierService {
+  private readonly notificationJobDoneSubject = 'Job done';
+
   constructor(
     private readonly configService: ConfigService,
     private readonly mailerService: MailerService,
@@ -14,7 +16,7 @@ export class NotifierService {
   async notifyByEmail(file: CompletedJob['file'], email: string) {
     await this.mailerService.sendMail(
       email,
-      'Job done',
+      this.notificationJobDoneSubject,
       `The video is available!\n${this.configService.getOrThrow(CONFIG_VIDEOS_BASE_URL_KEY)}/${file.id}/${file.name}`,
     );
   }
