@@ -29,3 +29,7 @@ docker run \
     --publish 3000:3000 \
     ghcr.io/valfur03/vidlvery:latest
 ```
+
+## License
+
+Licensed under MIT License, Copyright 2025 Valentin Furmanek.
