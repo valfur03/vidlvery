@@ -21,8 +21,11 @@ SMTP_PASS_FILE=
 
 ### Run with Docker
 
-The easiest way to deploy this app is to use Docker Compose. Just run the following command:
+The easiest way to deploy this app is to use Docker. Just run the following command:
 
 ```shell
-docker compose up -d
+docker run \
+    --env-file .env \
+    --publish 3000:3000 \
+    ghcr.io/valfur03/vidlvery:latest
 ```
