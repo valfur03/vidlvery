@@ -10,10 +10,11 @@ export class EncoderService {
 
   constructor(private readonly ffmpegService: FfmpegService) {}
 
-  encodeFile(filePath: string, _outputFilePath?: string) {
+  async encodeFile(filePath: string, _outputFilePath?: string) {
     const outputFilePath = _outputFilePath ?? EncoderService.defaultOutputFilePath(filePath);
 
-    if (this.ffmpegService.performMostStandardEncoding(filePath, outputFilePath) === undefined) {
+    const encodingChildProcess = await this.ffmpegService.performMostStandardEncoding(filePath, outputFilePath);
+    if (encodingChildProcess === undefined) {
       return filePath;
     }
 

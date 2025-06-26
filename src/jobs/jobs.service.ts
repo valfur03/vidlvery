@@ -17,7 +17,7 @@ export class JobsService {
   ) {}
 
   async schedule(job: Job) {
-    const videoFilePath = this.encoderService.encodeFile(job.file.path);
+    const videoFilePath = await this.encoderService.encodeFile(job.file.path);
     const video = await this.videosService.moveFile(videoFilePath, job);
     await this.notifierService.notify(video.job);
   }
