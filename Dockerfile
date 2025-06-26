@@ -32,4 +32,7 @@ COPY --from=build /app/package.json package.json
 COPY --from=build /app/dist dist
 COPY --from=build /app/node_modules node_modules
 
+RUN mkdir -p ./src/templates/sources
+COPY ./src/templates/sources/ ./src/templates/sources/
+
 CMD ["npm", "run", "start:prod"]
