@@ -3,7 +3,8 @@ import { execFile as _execFile } from 'node:child_process';
 import { FsService } from '../fs/fs.service';
 import { ConfigService } from '@nestjs/config';
 import { CONFIG_DISABLE_FFMPEG_KEY } from '../common/constants/env';
-import util from 'node:util';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+import util = require('node:util');
 
 const execFile = util.promisify(_execFile);
 
