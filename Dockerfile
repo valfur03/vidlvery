@@ -27,6 +27,8 @@ USER node
 
 FROM base AS prod
 
+RUN apk add --no-cache ffmpeg
+
 ENV NODE_ENV production
 
 COPY --from=build /app/package.json package.json
