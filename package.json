@@ -24,6 +24,7 @@
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
+    "handlebars": "^4.7.8",
     "mv": "^2.1.1",
     "nodemailer": "^7.0.3",
     "reflect-metadata": "^0.2.2",

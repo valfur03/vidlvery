@@ -9,6 +9,7 @@ import { FfmpegModule } from './ffmpeg/ffmpeg.module';
 import { FsModule } from './fs/fs.module';
 import { EncoderModule } from './encoder/encoder.module';
 import { NotifierModule } from './notifier/notifier.module';
+import { TemplatesModule } from './templates/templates.module';
 import baseConfiguration from './common/config/base';
 import smtpConfiguration from './common/config/smtp';
 
@@ -24,6 +25,7 @@ import smtpConfiguration from './common/config/smtp';
     FsModule,
     EncoderModule,
     NotifierModule,
+    TemplatesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
